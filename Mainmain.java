@@ -1,5 +1,5 @@
 package FinalProject;
-import java.lang.reflect.Array;
+import java.lang.*;
 import java.util.*;
 import java.util.regex.*;
 
@@ -99,7 +99,7 @@ public class Mainmain {
         System.out.print("Client Email Address (ex.: john.doe@example.com): ");
         clientEAdd = sc.nextLine();
 
-        isEmailAddValid = continfoValidation(clientEAdd);
+        isEmailAddValid = emailValidation(clientEAdd);
         if (!isEmailAddValid){
             System.out.println("Invalid Email Address. Please try again. \n");
         } else {
