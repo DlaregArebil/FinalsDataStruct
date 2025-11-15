@@ -22,12 +22,15 @@ public class Reservation {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         ArrayList<String> ReservationDate = new ArrayList<>();
+        ArrayList<String> Facilitytype = new ArrayList<>();
+        ArrayList<Integer> NumberofGuest = new ArrayList<>();
+        ArrayList<Integer> NumberofFacilitytoReserve = new ArrayList<>();
+
         //array
-        String[] tunayMonths = {"January", "February", "March", "April", "May", "June", "July","August","September","Ocotober","Novmber","December",};
+        String[] monthNames = {"January", "February", "March", "April", "May", "June", "July","August","September","Ocotober","Novmber","December",};
         String[] facility = {"Single Room", "Double", "King", "Suite"};
         double[] pricePerUnit = {1500.00, 2000.00, 3000.00, 4000.00};
         int[] pax = {2, 3, 4, 6};
-
 
         // ints
         int year;
@@ -35,6 +38,8 @@ public class Reservation {
         int day;
         int monthDays;
         int facilityType;
+        int numofGuest;
+        int numofFacilitytoReserve;
 
         //STARTING
         System.out.println("Reservation Date");
@@ -44,21 +49,22 @@ public class Reservation {
         if(month < 1 || month > 12){
             System.out.println("Invalid month selected. Please try again bitch.");
         } //maybe try-catch
-
         System.out.print("Select a year (e.g., 2025, 2026, 2027): ");
         year = sc.nextInt();
 
         monthDays = getDaysInMonth(month, year);
-        System.out.println(month + " has " + monthDays + " days");
+        System.out.println(monthNames[month - 1] + " has " + monthDays + " days");
         System.out.print("Select a day (1 - " + monthDays + "): ");
         day = sc.nextInt();
 
         if(day < 1 || day > monthDays){
             System.out.println("Invalid day selected. Please try again bitch");
         } else{
-            System.out.println("You've choosen: " + month + "/" + day + "/" + year);
+            String reserveDate = monthNames[month - 1] + "/" + day + "/" + year;
+            System.out.println("You've choosen: " + reserveDate);
+            ReservationDate.add(reserveDate);
         }
-        
+
         System.out.println("    Facility        Price Per Unit     Maximum # of Pax");
         System.out.println("-----------------------------------------------------------");
 
@@ -66,17 +72,30 @@ public class Reservation {
             System.out.printf("%-3d %-17s %-23.2f %d%n", i + 1, facility[i], pricePerUnit[i], pax[i]);
         }
 
-        System.out.println("Choose your Facility Type: ");
+        System.out.print("Choose your Facility Type: ");
         facilityType = sc.nextInt();
+        int i = facilityType - 1;
+
         if(facilityType > 0 && facilityType <= facility.length){
-            
+            String reserveFacility = facility[i] + " | Price: " + pricePerUnit[i] + " | Pax: " + pax[i];
+            System.out.println("\nYou selected:");
+            System.out.println(reserveFacility);
+            Facilitytype.add(reserveFacility);
+            System.out.println();
+        } else {
+            System.out.println("Invalid choice. Please try again.");
         }
 
-        
-        
-        System.out.println("Number of guest");
+        System.out.println("Number of guest: " );
+        numofGuest = sc.nextInt();
+        System.out.println();
+        NumberofGuest.add(numofGuest);
 
         System.out.println("Number of Faclities to Rerve");
+        numofFacilitytoReserve = sc.nextInt();
+        System.out.println();
+        NumberofFacilitytoReserve.add(numofFacilitytoReserve);
+        
     
     
     
