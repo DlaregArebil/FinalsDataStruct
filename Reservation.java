@@ -32,6 +32,9 @@ public class Reservation {
         double[] pricePerUnit = {1500.00, 2000.00, 3000.00, 4000.00};
         int[] pax = {2, 3, 4, 6};
 
+        //strings
+        String breakfast = "Free";
+
         // ints
         int year;
         int month;
@@ -40,6 +43,10 @@ public class Reservation {
         int facilityType;
         int numofGuest;
         int numofFacilitytoReserve;
+        int addPerson;
+        int additionalFee = 0;
+        Double lunch = 250.00;
+        Double dinner = 350.00;
 
         //STARTING
         System.out.println("Reservation Date");
@@ -86,18 +93,29 @@ public class Reservation {
             System.out.println("Invalid choice. Please try again.");
         }
 
-        System.out.println("Number of guest: " );
+        System.out.print("Number of guest (REMEMBER: There is an additional Php500.00 for every extra person for room accommodation): " );
         numofGuest = sc.nextInt();
+
+        if(numofGuest > pax[i]){
+            addPerson = numofGuest - pax[i];
+            additionalFee = addPerson * 500;
+
+            System.out.println("You added: " + addPerson + " pax");
+            System.out.println("Your additioanl fee is: Php" + additionalFee);
+        }
+
         System.out.println();
         NumberofGuest.add(numofGuest);
 
-        System.out.println("Number of Faclities to Rerve");
+        System.out.print("Number of Faclities to Rerve: ");
         numofFacilitytoReserve = sc.nextInt();
         System.out.println();
         NumberofFacilitytoReserve.add(numofFacilitytoReserve);
-        
-    
-    
-    
+
+        System.out.println("MEAL");
+        System.out.println("    Breakfast        Lunch         Dinner");
+        System.out.println("----------------------------------------------");
+        System.out.printf("%10s %15.2f %13.2f%n", breakfast, lunch, dinner);
+
     }
 }
