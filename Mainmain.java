@@ -152,10 +152,19 @@ public class ClientClass {
         System.out.println("Here is your Client ID: " + newClientID);
         System.out.print("Please do not share it to anyone");
 
-        try (BufferedWriter cleintWrite = new BufferedWriter(new FileWriter("client", true))) {
-			cleintWrite.write(firstname + newClientID);//clientID
-			cleintWrite.newLine();
-			System.out.println("Text appended successfully.");
+       try (BufferedWriter clientWrite = new BufferedWriter(new FileWriter("client", true))) {
+			clientWrite.write("Full Name: " + clientFName);
+            clientWrite.newLine();
+            clientWrite.write("Address: " + clientAdd);
+            clientWrite.newLine();
+            clientWrite.write("Contact Info: " + clientCInfo);
+            clientWrite.newLine();
+            clientWrite.write("Email Address: " + clientEAdd);
+            clientWrite.newLine();
+            clientWrite.write("Client ID: " + newClientID);
+            clientWrite.write("----------------------------------------");
+			clientWrite.newLine();
+			 System.out.println("Client information saved to file successfully.");
 		} catch (IOException e) {
 			System.out.println("Failed to update the file.");
 			e.printStackTrace();
@@ -164,3 +173,4 @@ public class ClientClass {
 
     }
 }
+
