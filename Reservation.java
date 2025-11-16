@@ -2,14 +2,63 @@ package FinalProject;
 import java.util.*;
 import java.io.*;
 
-public class Reservation {
+public class ClientReservation {
+    Scanner sc = new Scanner(System.in);
+    //ArrayLists
+    ArrayList<String> ReservationDate = new ArrayList<>();
+    ArrayList<String> Facilitytype = new ArrayList<>();
+    ArrayList<Integer> NumberofGuest = new ArrayList<>();
+    ArrayList<Integer> NumberofFacilitytoReserve = new ArrayList<>();
 
+    //array
+    String[] monthNames = {"January", "February", "March", "April", "May", "June", "July","August","September","Ocotober","Novmber","December",};
+    String[] facility = {"Single Room", "Double", "King", "Suite"};
+    double[] pricePerUnit = {1500.00, 2000.00, 3000.00, 4000.00};
+    int[] pax = {2, 3, 4, 6};
 
-    static boolean isLeapYear (int year){
+    //strings
+    String reserveDate;
+    String reserveFacility;
+    String breakfast = "Free";
+    String reservationRecord;
+
+    // ints
+    int year;
+    int month;
+    int day;
+    int monthDays;
+    int facilityType;
+    int i;
+    int numofGuest;
+    int numofFacilitytoReserve;
+    int addPerson;
+    int additionalFee = 0;
+    int foodchoice = 0;
+    int dinnerQuantity = 0;
+    int dinnerTotal = 0;
+    int lunchQuantity = 0;
+    int lunchTotal = 0;
+    int totalmealPrice = 0;
+    
+    //doubles
+    Double lunch = 250.00;
+    Double dinner = 350.00;
+    Double payment = 0.00;
+    Double kulang;
+    Double partialFee;
+    Double totalReservation = 0.00;
+        
+    //char
+    char lunchdinner;
+    char fullpayment;
+
+    File reservFile = new File("RESERVE.txt");
+
+    public boolean isLeapYear (int year){
         return (year % 4 == 0 && (year % 100 !=0 || year % 400 == 0));
     }
 
-    static int getDaysInMonth(int month, int year){
+    public int getDaysInMonth(int month, int year){
         int[] days = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
         if(month == 2 && isLeapYear(year)){
@@ -19,7 +68,7 @@ public class Reservation {
         return days[month - 1];
     }
 
-   static void getcreateFile(File reserFile){
+   public void getcreateFile(File reserFile){
         try {
             if (reserFile.createNewFile()) {
                 System.out.println("RESERVE text file created successfully.");
@@ -33,132 +82,70 @@ public class Reservation {
    }
 
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        ArrayList<String> ReservationDate = new ArrayList<>();
-        ArrayList<String> Facilitytype = new ArrayList<>();
-        ArrayList<Integer> NumberofGuest = new ArrayList<>();
-        ArrayList<Integer> NumberofFacilitytoReserve = new ArrayList<>();
-
-        //file
-        File reservFile = new File("RESERVE text file");
-        //array
-        String[] monthNames = {"January", "February", "March", "April", "May", "June", "July","August","September","Ocotober","Novmber","December",};
-        String[] facility = {"Single Room", "Double", "King", "Suite"};
-        double[] pricePerUnit = {1500.00, 2000.00, 3000.00, 4000.00};
-        int[] pax = {2, 3, 4, 6};
-
-        //strings
-        String breakfast = "Free";
-        String reservationRecord;
-
-        // ints
-        int year;
-        int month;
-        int day;
-        int monthDays;
-        int facilityType;
-        int numofGuest;
-        int numofFacilitytoReserve;
-        int addPerson;
-        int additionalFee = 0;
-        int foodchoice = 0;
-        int dinnerQuantity = 0;
-        int dinnerTotal = 0;
-        int lunchQuantity = 0;
-        int lunchTotal = 0;
-        int totalmealPrice = 0;
-        //doubles
-        Double lunch = 250.00;
-        Double dinner = 350.00;
-        Double payment = 0.00;
-        Double kulang;
-        Double partialFee;
-        
-        //char
-        char lunchdinner;
-        char fullpayment;
-
-        //STARTING
-        System.out.println("Reservation Date");
-        while(true){
-            try{
-                System.out.print("Please select a month (1 = January - 12 = December): ");
-                month = sc.nextInt();
-
-                if (month < 1 || month > 12) {
-                    throw new IllegalArgumentException("Invalid month. Please enter a number between 1 and 12.");
+       public void getReservationDate() {
+            System.out.println("Reservation Date");
+            while (true) {
+                try {
+                    System.out.print("Please select a month (1 = January - 12 = December): ");
+                    month = sc.nextInt();
+                    if (month >= 1 && month <= 12) {
+                        break;
+                    }
+                    System.out.println("Invalid month.");
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a valid integer for the month.");
+                    sc.nextLine();
                 }
-                break;
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid integer for the month.");
-                sc.nextLine();
-            } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-            }    
-                    
-        }
-
-       while (true) {
-            try {
-                System.out.print("Select a year (e.g., 2025, 2026, 2027): ");
-                year = sc.nextInt();
-                break; 
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid year.");
-                sc.nextLine();
             }
-        }
-
-        monthDays = getDaysInMonth(month, year);
-        System.out.println(monthNames[month - 1] + " has " + monthDays + " days");
-        while (true) {
-            try{
-                System.out.print("Select a day (1 - " + monthDays + "): ");
-                day = sc.nextInt();
-
-                if(day < 1 || day > monthDays){
-                    System.out.println("Invalid day selected. Please try again.");
-                } else {
-                    String reserveDate = monthNames[month - 1] + "/" + day + "/" + year;
-                    System.out.println("You've choosen: " + reserveDate);
-                    ReservationDate.add(reserveDate);
-                    break;
+    
+            System.out.print("Please select year (ex: 2025): ");
+            year = sc.nextInt();
+    
+            monthDays = getDaysInMonth(month, year);
+            System.out.println(monthNames[month - 1] + " has " + monthDays + " days.");
+    
+            while (true) {
+                try {
+                    System.out.print("Please select a day (1-" + monthDays + "): ");
+                    day = sc.nextInt();
+                    if (day >= 1 && day <= monthDays) break;
+                    System.out.println("Invalid day.");
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a valid integer for the day.");
+                    sc.nextLine();
                 }
-            } catch (InputMismatchException e){
-                System.out.println("Invalid input. Please enter a valid integer for the day.");
-                sc.nextLine();
             }
+    
+            reserveDate = monthNames[month - 1] + " " + day + ", " + year;
+            System.out.println("You selected: " + reserveDate);
         }
 
-        //facility
+    public void getFacility() {
+        System.out.println("\nFacility Options:");
         System.out.println("    Facility        Price Per Unit     Maximum # of Pax");
         System.out.println("-----------------------------------------------------------");
-
         for(int i=0; i<facility.length; i++){
             System.out.printf("%-3d %-17s %-23.2f %d%n", i + 1, facility[i], pricePerUnit[i], pax[i]);
         }
 
+        
         while (true) {
             try {
-                System.out.print("Choose your Facility Type: ");
+                System.out.print("Choose facility type: ");
                 facilityType = sc.nextInt();
-                break;
-            } catch (InputMismatchException e){
+                if (facilityType >= 1 && facilityType <= 4) {
+                    break;
+                }
+                System.out.println("Invalid choice.");
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid integer for the day.");
                 sc.nextLine();
             }
         }
-        int i = facilityType - 1;
-        if(facilityType > 0 && facilityType <= facility.length){
-            String reserveFacility = facility[i] + " | Price: " + pricePerUnit[i] + " | Pax: " + pax[i];
-            System.out.println("\nYou selected:");
-            System.out.println(reserveFacility);
-            Facilitytype.add(reserveFacility);
-            System.out.println();
-        } else {
-            System.out.println("Invalid choice. Please try again.");
-        }
+
+        i = facilityType - 1;
+        reserveFacility = facility[i];
+
 
         while (true) {
             try {
@@ -194,10 +181,9 @@ public class Reservation {
                 sc.nextLine();
             }
         }
-        
+    }
 
-        //MEAL
-        System.out.println("MEAL");
+    public void getMeals() {
         System.out.println("    Breakfast        Lunch         Dinner");
         System.out.println("----------------------------------------------");
         System.out.printf("%10s %15.2f %13.2f%n", breakfast, lunch, dinner);
@@ -243,8 +229,9 @@ public class Reservation {
                 sc.nextLine();
             }
         }
-        
-        //payment
+    }
+    
+    public void getPayment() {
         System.out.println("\nReservation Summary:");
         System.out.println("----------------------------");
         System.out.println("Reservation Date: " + ReservationDate.get(0));
@@ -263,8 +250,8 @@ public class Reservation {
         System.out.println("------------------------------------------------------------");
         System.out.println("Thank you for your reservation! We look forward to serving you.");
 
-
         System.out.println("You have the option to pay 30% reservation fee or pay the full amount.");
+        totalReservation = (pricePerUnit[i] * NumberofFacilitytoReserve.get(0) + additionalFee + totalmealPrice);
         Double totalReservation = (pricePerUnit[i] * NumberofFacilitytoReserve.get(0) + additionalFee + totalmealPrice);
 
         System.out.println("Total Reservation Amount: " + totalReservation);
@@ -302,34 +289,45 @@ public class Reservation {
                 } catch (InputMismatchException e) {
                     System.out.println("Invalid input. Please enter a valid character or number.");
                     sc.nextLine();
-                }
+            } 
         }
+    }
 
-        getcreateFile(reservFile);
-
+    public void saveToFile() {
         try (BufferedWriter reserveWriter = new BufferedWriter(new FileWriter(reservFile, true))) {
-            reserveWriter.write(ReservationDate.get(0));
+            reserveWriter.write("Date: " + reserveDate);
             reserveWriter.newLine();
-            reserveWriter.write(Facilitytype.get(0));
+            reserveWriter.write("Facility: " + reserveFacility);
             reserveWriter.newLine();
-            reserveWriter.write(String.valueOf(NumberofGuest.get(0)));
+            reserveWriter.write("Guests: " + NumberofGuest.get(0));
             reserveWriter.newLine();
-            reserveWriter.write(String.valueOf(additionalFee));
+            reserveWriter.write("Additional Fee: " + additionalFee);
             reserveWriter.newLine();
-            reserveWriter.write(String.valueOf(totalmealPrice));
+            reserveWriter.write("Meals Total: " + (totalmealPrice));
             reserveWriter.newLine();
-            reserveWriter.write(String.valueOf(totalReservation));
+            reserveWriter.write("Total Reservation: " + String.valueOf(totalReservation));
             reserveWriter.newLine();
-            reserveWriter.write(String.valueOf(payment));
+            reserveWriter.write("Payment Made: " + payment);
             reserveWriter.newLine();
-            
-            System.out.println("Reservation saved to file.");
-
+            reserveWriter.write("--------------------------------------------------");
+            reserveWriter.newLine();
         } catch (IOException e) {
             System.out.println("Failed to write to the file.");
             e.printStackTrace();
         }
-
-
     }
+
+    public void getReservation(){
+        getReservationDate();
+        getFacility();
+        getMeals();
+        getPayment();
+        getcreateFile(reservFile);
+    }
+
+    public static void main(String[] args) {
+        ClientReservation reservation = new ClientReservation();
+        reservation.getReservation();
+    }
+
 }
