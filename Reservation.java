@@ -45,8 +45,19 @@ public class Reservation {
         int numofFacilitytoReserve;
         int addPerson;
         int additionalFee = 0;
+        int foodchoice = 0;
+        int dinnerQuantity = 0;
+        int dinnerTotal = 0;
+        int lunchQuantity = 0;
+        int lunchTotal = 0;
+        int totalmealPrice = 0;
+
+        //doubles
         Double lunch = 250.00;
         Double dinner = 350.00;
+
+        //char
+        char lunchdinner;
 
         //STARTING
         System.out.println("Reservation Date");
@@ -72,6 +83,7 @@ public class Reservation {
             ReservationDate.add(reserveDate);
         }
 
+        //facility
         System.out.println("    Facility        Price Per Unit     Maximum # of Pax");
         System.out.println("-----------------------------------------------------------");
 
@@ -112,10 +124,50 @@ public class Reservation {
         System.out.println();
         NumberofFacilitytoReserve.add(numofFacilitytoReserve);
 
+        //MEAL
         System.out.println("MEAL");
         System.out.println("    Breakfast        Lunch         Dinner");
         System.out.println("----------------------------------------------");
         System.out.printf("%10s %15.2f %13.2f%n", breakfast, lunch, dinner);
+
+        System.out.println("Would like to avail Lunch and Dinner? (Y/N) ");
+        lunchdinner = sc.next().toUpperCase().charAt(0);
+
+        if(lunchdinner == 'Y'){
+            do {
+                 System.out.println("Lunch: 1");
+                 System.out.println("Dinner: 2");
+                 System.out.println("Total: 0");
+                 foodchoice = sc.nextInt();
+            switch (foodchoice) {
+                case 1:
+                    System.out.print("Meal Lunch Quantity: "); 
+                    lunchQuantity = sc.nextInt();
+                    lunchTotal = lunchQuantity * 250;
+                    System.out.println("Lunch: 1");
+                    System.out.println("Dinner: 2");
+                    System.out.println("Total: 0");
+                    foodchoice = sc.nextInt();
+                    break;
+
+                case 2: 
+                    System.out.println("Meal Dinner Quantity: "); 
+                    dinnerQuantity = sc.nextInt();
+                    dinnerTotal = dinnerQuantity * 250;
+                    System.out.println("Lunch: 1");
+                    System.out.println("Dinner: 2");
+                    System.out.println("Total: 0");
+                    foodchoice = sc.nextInt();
+                    break;
+            
+                default:
+                    break;
+            }
+            } while (foodchoice != 0);
+           
+        }
+        
+        totalmealPrice = lunchTotal + dinnerTotal;
 
     }
 }
