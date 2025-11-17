@@ -305,6 +305,10 @@ public class ClientReservation {
                     System.out.println("Your change is: " + change);
                 }
 
+                if (change == 0.00) {
+                    System.out.println("No change.");
+                } 
+
             } else if (fullpayment == 'N') {
                 partialFee = totalReservation * 0.30;
                 System.out.println("30% Reservation fee: Php " + partialFee);
@@ -340,7 +344,7 @@ public class ClientReservation {
             reserveWriter.newLine();
             reserveWriter.write("Payment Made: " + payment);
             reserveWriter.newLine();
-            reserveWriter.write("Change " + change);
+            reserveWriter.write("Change: " + change);
             reserveWriter.newLine();
             reserveWriter.write("--------------------------------------------------\n");
             reserveWriter.newLine();
