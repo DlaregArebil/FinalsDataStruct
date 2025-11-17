@@ -118,6 +118,7 @@ public class ClientReservation {
     
             reserveDate = monthNames[month - 1] + " " + day + ", " + year;
             System.out.println("You selected: " + reserveDate);
+            ReservationDate.add(reserveDate);
         }
 
     public void getFacility() {
@@ -145,6 +146,7 @@ public class ClientReservation {
 
         i = facilityType - 1;
         reserveFacility = facility[i];
+        Facilitytype.add(reserveFacility);
 
 
         while (true) {
@@ -204,25 +206,29 @@ public class ClientReservation {
                             System.out.print("Meal Lunch Quantity: "); 
                             lunchQuantity = sc.nextInt();
                             lunchTotal = lunchQuantity * 250;
-                            System.out.println("Select 0 to view Total");
-                            foodchoice = sc.nextInt();
-                            continue;
+                            break;
 
                         case 2: 
                             System.out.print("Meal Dinner Quantity: "); 
                             dinnerQuantity = sc.nextInt();
                             dinnerTotal = dinnerQuantity * 250;
-                            System.out.println("Select 0 to view Total");
-                            foodchoice = sc.nextInt();
                             break;
-                    
+                        
                         default:
+                            System.out.println("Invalid choice. Please select 1, 2, or 0.");
                             break;
                     }
-                } while (foodchoice != 0);
+                    } while (foodchoice != 0);
+                
+                } else if (lunchdinner == 'N') {
+                    lunchTotal = 0;
+                    dinnerTotal = 0;
+                } else {
+                    System.out.println("Invalid input. Please enter Y or N.");
+                    continue;
+                }
             
-            }
-            totalmealPrice = lunchTotal + dinnerTotal;
+                totalmealPrice = lunchTotal + dinnerTotal;
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid character.");
