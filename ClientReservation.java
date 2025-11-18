@@ -3,7 +3,7 @@ import java.util.*;
 import java.io.*;
 
 public class ClientReservation {
-    Scanner sc = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
 
     //ArrayLists
     ArrayList<String> ReservationDate = new ArrayList<>();
@@ -40,15 +40,16 @@ public class ClientReservation {
     int lunchQuantity = 0;
     int lunchTotal = 0;
     int totalmealPrice = 0;
+    int clientID;
     
     //doubles
     Double lunch = 250.00;
     Double dinner = 350.00;
-    Double payment = 0.00;
+    static Double payment = 0.00;
     Double kulang;
-    Double change;
+    Double change = 0.0;
     Double partialFee;
-    Double totalReservation = 0.00;
+    static Double totalReservation = 0.00;
         
     //char
     char lunchdinner;
@@ -96,7 +97,7 @@ public class ClientReservation {
        public void getReservationDate() {
             System.out.println("██▄  ██████ ▄█████ ██████ █████▄  ██  ██ ▄████▄ ██████ ██ ▄████▄ ███  ██");
             System.out.println("██▄▄██▄ ██▄▄   ▀▀▀▄▄▄ ██▄▄   ██▄▄██▄ ██▄▄██ ██▄▄██   ██   ██ ██  ██ ██ ▀▄██");
-            System.out.println("██   ██ ██▄▄▄▄ █████▀ ██▄▄▄▄ ██   ██  ▀██▀  ██  ██   ██   ██ ▀████▀ ██   ██");
+            System.out.println("██   ██ ██▄▄▄▄ █████▀ ██▄▄▄▄ ██   ██  ▀██▀  ██  ██   ██   ██ ▀████▀ ██   ██\n");
             while (true) {
                 try {
                     System.out.print("Please select a month (1 = January - 12 = December): ");
@@ -328,8 +329,30 @@ public class ClientReservation {
     }
 }
 
+    public static void getBalance() {
+        System.out.println("Guest Name: " );
+        Double Balance = totalReservation - payment;
+        if (Balance > 0) {
+        System.out.println("Your remaining balance is: Php " + Balance);
+        } else if (Balance < 0) {
+            System.out.println("You have overpaid. Your change is: Php " + Math.abs(Balance));
+        } else {
+            System.out.println("Your payment is complete. No remaining balance.");
+        }
+            System.out.println("\nType anything to go back to Client Menu");
+            String choice = sc.next();
+            MainCode.clearscreen();
+        
+    }
+
     public void saveToFile() {
-        try (BufferedWriter reserveWriter = new BufferedWriter(new FileWriter(reservFile, true))) {
+        clientID = (int)(Math.random()*90000)+10000;
+
+        try (BufferedWriter reserveWriter = new BufferedWriter(new FileWriter(reservFile,true))){
+            reserveWriter.write("ClientID: " + clientID);
+            reserveWriter.newLine();
+            reserveWriter.write("Client Name: ");
+            reserveWriter.newLine();
             reserveWriter.write("Date: " + reserveDate);
             reserveWriter.newLine();
             reserveWriter.write("Facility: " + reserveFacility);
@@ -338,20 +361,18 @@ public class ClientReservation {
             reserveWriter.newLine();
             reserveWriter.write("Additional Fee: " + additionalFee);
             reserveWriter.newLine();
-            reserveWriter.write("Meals Total: " + (totalmealPrice));
+            reserveWriter.write("Meals Total: " + totalmealPrice);
             reserveWriter.newLine();
-            reserveWriter.write("Total Reservation: " + String.valueOf(totalReservation));
+            reserveWriter.write("Total Reservation: " + totalReservation);
             reserveWriter.newLine();
             reserveWriter.write("Payment Made: " + payment);
             reserveWriter.newLine();
             reserveWriter.write("Change: " + change);
             reserveWriter.newLine();
-            reserveWriter.write("--------------------------------------------------\n");
-            reserveWriter.newLine();
-        } catch (IOException e) {
-            System.out.println("Failed to write to the file.");
-            e.printStackTrace();
-        }
+            reserveWriter.write("--------------------------------------------------\n"); reserveWriter.newLine();
+
+            System.out.println("\nYour reservation has been saved! Your Client Login ID is: " + clientID);
+        } catch(IOException e){ e.printStackTrace(); }
     }
 
     public void getReservation(){
@@ -361,11 +382,72 @@ public class ClientReservation {
         getPayment();
         getcreateFile(reservFile);
         saveToFile();
+        System.out.println("\nType anything to go back to Client Menu");
+            String choice = sc.next();
+            MainCode.clearscreen();
     }
 
     public static void ClientReservation(String[] args) {
         ClientReservation reservation = new ClientReservation();
-        reservation.getReservation();
-    }
+        boolean loop2 = false;
 
+        MainCode.welcomeclient();
+
+        while(!loop2){
+            System.out.println("\n╔══════════════════════════════════════════════════╗");
+            System.out.println("║                   CLIENT MENU                    ║");
+            System.out.println("╠══════════════════════════════════════════════════╣");
+            System.out.println("║   1. Reservation                                 ║");
+            System.out.println("║   2. Balance                                     ║");
+            System.out.println("║   3. Log out                                     ║");
+            System.out.println("╚══════════════════════════════════════════════════╝\n");
+            System.out.print("Enter your choice: ");
+            int choice = sc.nextInt();
+
+            try{
+                switch(choice){
+                    case 1: MainCode.loadingscreen2();
+                    MainCode.clearscreen();
+                    reservation.getReservation();
+                    break;
+
+                    case 2: MainCode.loadingscreen2();
+                    MainCode.clearscreen();
+                    getBalance();
+                    break;
+
+                    case 3:
+                    MainCode.clearscreen();
+                    System.out.println("╔══════════════════════════════════════════════════╗");
+                    System.out.println("║               ACTION CONFIRMATION                ║");
+                    System.out.println("╠══════════════════════════════════════════════════╣");
+                    System.out.println("║  You selected: LOG-OUT                           ║");
+                    System.out.println("║  Are you sure you want to log out?               ║");
+                    System.out.println("║                                                  ║");
+                    System.out.println("║  1. Yes, log out                                 ║");
+                    System.out.println("║  2. No, go back                                  ║");
+                    System.out.println("╚══════════════════════════════════════════════════╝\n");
+                    System.out.print("Enter your choice: ");
+                    String logoutchoice = sc.next();
+                    if(logoutchoice.equalsIgnoreCase("yes")){
+                        MainCode.clearscreen();
+                        MainCode.lougoutscreen();
+                        MainCode.main(args);
+                    }else if(logoutchoice.equalsIgnoreCase("no")){
+                        loop2 = false;
+                        MainCode.clearscreen();
+                    }
+                    break;
+                    
+                    default: System.out.println("Invalid Choice. Please Try again");
+                }
+            }catch(InputMismatchException e){
+                System.out.print("Invalid Input. Please Enter a number");
+                System.out.println("Type Anything to continue.");
+                sc.nextLine();
+                sc.next();
+                MainCode.clearscreen();
+            }
+        }
+    }
 }
